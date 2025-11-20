@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-end-rgb));
+}
+
+/* Make input and textarea text black */
+input,
+textarea {
+  color: #000000 !important;
+}
+
+/* Make placeholder text black for all inputs and textareas */
+input::placeholder,
+textarea::placeholder {
+  color: #000000 !important;
+  opacity: 0.6;
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: #000000 !important;
+  opacity: 0.6;
+}
+
+input::-moz-placeholder,
+textarea::-moz-placeholder {
+  color: #000000 !important;
+  opacity: 0.6;
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+  color: #000000 !important;
+  opacity: 0.6;
+}
+
