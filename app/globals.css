@@ -3,22 +3,28 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
+  --foreground-rgb: 15, 23, 42; /* Slate 900 */
+  --background-start-rgb: 248, 250, 252; /* Slate 50 */
   --background-end-rgb: 255, 255, 255;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --foreground-rgb: 241, 245, 249; /* Slate 100 */
+    --background-start-rgb: 15, 23, 42; /* Slate 900 */
+    --background-end-rgb: 2, 6, 23; /* Slate 950 */
   }
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-end-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+  font-feature-settings: "cv02", "cv03", "cv04";
 }
 
 /* Make input and textarea text black */

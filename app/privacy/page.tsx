@@ -2,14 +2,14 @@ export default function PrivacyPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-16 bg-white dark:bg-gray-900">
       <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-8">Privacy Policy</h1>
-      
+
       <div className="space-y-6 text-gray-700 dark:text-gray-200">
         <section>
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">Last updated: {new Date().toLocaleDateString()}</p>
-          
+
           <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Introduction</h2>
           <p className="leading-relaxed">
-            FarmMate ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy 
+            FarmMate (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is committed to protecting your privacy. This Privacy Policy
             explains how we collect, use, disclose, and safeguard your information when you use our platform.
           </p>
         </section>
@@ -42,8 +42,8 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Information Sharing</h2>
           <p className="leading-relaxed">
-            We share your information with other users of the platform to facilitate connections. 
-            Your profile information and listings will be visible to other registered users. 
+            We share your information with other users of the platform to facilitate connections.
+            Your profile information and listings will be visible to other registered users.
             We do not sell your personal information to third parties.
           </p>
         </section>
@@ -51,8 +51,8 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Data Security</h2>
           <p className="leading-relaxed">
-            We implement appropriate technical and organizational measures to protect your personal 
-            information. However, no method of transmission over the internet is 100% secure, and 
+            We implement appropriate technical and organizational measures to protect your personal
+            information. However, no method of transmission over the internet is 100% secure, and
             we cannot guarantee absolute security.
           </p>
         </section>
@@ -71,7 +71,7 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Contact Us</h2>
           <p className="leading-relaxed">
-            If you have questions about this Privacy Policy, please contact us through our platform 
+            If you have questions about this Privacy Policy, please contact us through our platform
             or via the contact information provided.
           </p>
         </section>

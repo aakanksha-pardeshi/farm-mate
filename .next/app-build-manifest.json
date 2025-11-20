@@ -21,25 +21,15 @@
       "static/chunks/main-app.js",
       "static/chunks/app/listings/lands/page.js"
     ],
-    "/listings/farmers/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/listings/farmers/page.js"
-    ],
-    "/about/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/about/page.js"
-    ],
     "/listings/lands/create/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/listings/lands/create/page.js"
     ],
-    "/privacy/page": [
+    "/listings/farmers/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/privacy/page.js"
+      "static/chunks/app/listings/farmers/page.js"
     ]
   }
 }

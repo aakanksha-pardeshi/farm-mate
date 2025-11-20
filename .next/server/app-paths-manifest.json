@@ -1,8 +1,7 @@
 {
-  "/listings/lands/page": "app/listings/lands/page.js",
-  "/about/page": "app/about/page.js",
-  "/privacy/page": "app/privacy/page.js",
-  "/profile/create/page": "app/profile/create/page.js",
   "/page": "app/page.js",
-  "/listings/lands/create/page": "app/listings/lands/create/page.js"
+  "/profile/create/page": "app/profile/create/page.js",
+  "/listings/lands/page": "app/listings/lands/page.js",
+  "/listings/lands/create/page": "app/listings/lands/create/page.js",
+  "/listings/farmers/page": "app/listings/farmers/page.js"
 }

@@ -8,88 +8,78 @@ export default function Navbar() {
   const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-  const navLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/listings/lands', label: 'Land Listings' },
-    { href: '/listings/farmers', label: 'Farmer Profiles' },
-    { href: '/about', label: 'About Us' },
-    { href: '/privacy', label: 'Privacy Policy' },
-  ]
+  const isActive = (path: string) => pathname === path
 
   return (
-    <nav className="bg-white shadow-md">
+    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <Link href="/" className="flex items-center">
-            <span className="text-2xl font-bold text-primary-600">FarmMate</span>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition ${
-                  pathname === link.href
-                    ? 'bg-primary-600 text-white'
-                    : 'text-gray-700 hover:bg-primary-50 hover:text-primary-600'
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <Link
-              href="/profile/create"
-              className="ml-4 px-4 py-2 bg-primary-600 text-white rounded-md text-sm font-medium hover:bg-primary-700 transition"
-            >
-              Create Profile
+        <div className="flex justify-between h-16">
+          <div className="flex items-center gap-8">
+            <Link href="/" className="flex items-center gap-2">
+              <span className="text-3xl">🌾</span>
+              <span className="text-2xl font-bold text-primary-900 tracking-tight">FarmMate</span>
             </Link>
+
+            <div className="hidden md:flex items-center gap-6">
+              <Link
+                href="/listings/lands"
+                className={`text-sm font-medium transition-colors ${isActive('/listings/lands')
+                  ? 'text-primary-600'
+                  : 'text-gray-600 hover:text-primary-600'
+                  }`}
+              >
+                Find Land
+              </Link>
+              <Link
+                href="/listings/farmers"
+                className={`text-sm font-medium transition-colors ${isActive('/listings/farmers')
+                  ? 'text-primary-600'
+                  : 'text-gray-600 hover:text-primary-600'
+                  }`}
+              >
+                Find Farmers
+              </Link>
+            </div>
           </div>
 
-          {/* Mobile menu button */}
-          <button
-            className="md:hidden p-2 rounded-md text-gray-700 hover:bg-primary-50"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              {isMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/profile/create"
+              className="bg-primary-600 text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-primary-700 transition shadow-sm hover:shadow-md"
+            >
+              Join Now
+            </Link>
+
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="md:hidden p-2 rounded-md text-gray-600 hover:text-primary-600 focus:outline-none"
+            >
+              <span className="text-2xl">☰</span>
+            </button>
+          </div>
         </div>
+      </div>
 
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden py-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`block px-3 py-2 rounded-md text-base font-medium mb-1 ${
-                  pathname === link.href
-                    ? 'bg-primary-600 text-white'
-                    : 'text-gray-700 hover:bg-primary-50'
-                }`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-white border-t border-gray-100">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <Link
-              href="/profile/create"
-              className="block mt-4 px-4 py-2 bg-primary-600 text-white rounded-md text-base font-medium text-center"
-              onClick={() => setIsMenuOpen(false)}
+              href="/listings/lands"
+              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50"
             >
-              Create Profile
+              Find Land
+            </Link>
+            <Link
+              href="/listings/farmers"
+              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50"
+            >
+              Find Farmers
             </Link>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </nav>
   )
 }
-
