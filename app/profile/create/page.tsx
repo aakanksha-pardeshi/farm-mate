@@ -20,11 +20,6 @@ export default function CreateProfilePage() {
     description: '',
     experience: '',
     specialties: '',
-    // Landowner specific
-    landSize: '',
-    landLocation: '',
-    landDescription: '',
-    farmerRequirements: '',
     // Farmer specific
     yearsOfExperience: '',
     crops: '',
@@ -43,9 +38,10 @@ export default function CreateProfilePage() {
     }
     profiles.push(newProfile)
     localStorage.setItem('profiles', JSON.stringify(profiles))
-    
+
     // Redirect based on type
     if (profileType === 'landowner') {
+      // Landowners go to listings page to create a listing
       router.push('/listings/lands')
     } else {
       router.push('/listings/farmers')
@@ -72,11 +68,10 @@ export default function CreateProfilePage() {
           <button
             type="button"
             onClick={() => setProfileType('farmer')}
-            className={`flex-1 px-6 py-4 rounded-lg border-2 transition ${
-              profileType === 'farmer'
+            className={`flex-1 px-6 py-4 rounded-lg border-2 transition ${profileType === 'farmer'
                 ? 'border-primary-600 bg-primary-50 text-primary-700'
                 : 'border-gray-300 bg-white text-gray-700 hover:border-primary-300'
-            }`}
+              }`}
           >
             <div className="text-2xl mb-2">👨‍🌾</div>
             <div className="font-semibold">Farmer</div>
@@ -84,11 +79,10 @@ export default function CreateProfilePage() {
           <button
             type="button"
             onClick={() => setProfileType('landowner')}
-            className={`flex-1 px-6 py-4 rounded-lg border-2 transition ${
-              profileType === 'landowner'
+            className={`flex-1 px-6 py-4 rounded-lg border-2 transition ${profileType === 'landowner'
                 ? 'border-primary-600 bg-primary-50 text-primary-700'
                 : 'border-gray-300 bg-white text-gray-700 hover:border-primary-300'
-            }`}
+              }`}
           >
             <div className="text-2xl mb-2">🏞️</div>
             <div className="font-semibold">Land Owner</div>
@@ -100,7 +94,7 @@ export default function CreateProfilePage() {
         {/* Common Fields */}
         <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Basic Information</h2>
-          
+
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
               Full Name *
@@ -183,7 +177,7 @@ export default function CreateProfilePage() {
         {profileType === 'farmer' && (
           <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Farming Experience</h2>
-            
+
             <div>
               <label htmlFor="yearsOfExperience" className="block text-sm font-medium text-gray-700 mb-2">
                 Years of Experience *
@@ -248,74 +242,19 @@ export default function CreateProfilePage() {
           </div>
         )}
 
-        {/* Landowner Specific Fields */}
+        {/* Landowner Specific Message */}
         {profileType === 'landowner' && (
-          <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Land Information</h2>
-            
-            <div>
-              <label htmlFor="landSize" className="block text-sm font-medium text-gray-700 mb-2">
-                Land Size (acres) *
-              </label>
-              <input
-                type="number"
-                id="landSize"
-                name="landSize"
-                required
-                min="0"
-                step="0.1"
-                value={formData.landSize}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="landLocation" className="block text-sm font-medium text-gray-700 mb-2">
-                Land Location *
-              </label>
-              <input
-                type="text"
-                id="landLocation"
-                name="landLocation"
-                required
-                value={formData.landLocation}
-                onChange={handleChange}
-                placeholder="Address or location of the land"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="landDescription" className="block text-sm font-medium text-gray-700 mb-2">
-                Land Description *
-              </label>
-              <textarea
-                id="landDescription"
-                name="landDescription"
-                required
-                rows={4}
-                value={formData.landDescription}
-                onChange={handleChange}
-                placeholder="Describe the land, soil type, water access, etc."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="farmerRequirements" className="block text-sm font-medium text-gray-700 mb-2">
-                What Kind of Farmer Are You Looking For? *
-              </label>
-              <textarea
-                id="farmerRequirements"
-                name="farmerRequirements"
-                required
-                rows={4}
-                value={formData.farmerRequirements}
-                onChange={handleChange}
-                placeholder="Describe the type of farmer, experience level, crops you're interested in, etc."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-              />
+          <div className="bg-blue-50 p-6 rounded-lg border border-blue-200">
+            <div className="flex items-start gap-3">
+              <div className="text-2xl">ℹ️</div>
+              <div>
+                <h3 className="text-lg font-semibold text-blue-900 mb-1">
+                  Create your profile first
+                </h3>
+                <p className="text-blue-700">
+                  After creating your profile, you'll be able to create multiple land listings with specific details for each property.
+                </p>
+              </div>
             </div>
           </div>
         )}

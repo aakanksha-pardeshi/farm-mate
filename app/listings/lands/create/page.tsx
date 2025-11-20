@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { getPincodeDetails } from '@/utils/location'
 
 export default function CreateLandListingPage() {
   const router = useRouter()
@@ -10,7 +11,10 @@ export default function CreateLandListingPage() {
     name: '',
     email: '',
     phone: '',
-    location: '',
+    pincode: '',
+    location: '', // City, State derived from pincode
+    climate: '', // Derived from pincode
+    temperature: '', // Derived from pincode
     landSize: '',
     landLocation: '',
     landDescription: '',
@@ -19,9 +23,29 @@ export default function CreateLandListingPage() {
     infrastructure: '',
     farmerRequirements: '',
     compensation: '',
+    priceExpectation: '', // Willing to pay/get
+    pastYield: '',
     duration: '',
     additionalNotes: '',
   })
+
+  const [recommendedPrice, setRecommendedPrice] = useState('')
+
+  const handlePincodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const code = e.target.value
+    setFormData(prev => ({ ...prev, pincode: code }))
+
+    if (code.length === 6) {
+      const details = getPincodeDetails(code)
+      setFormData(prev => ({
+        ...prev,
+        location: `${details.city}, ${details.state}`,
+        climate: details.climate,
+        temperature: details.temperature
+      }))
+      setRecommendedPrice(details.recommendedPricePerAcre)
+    }
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -30,11 +54,12 @@ export default function CreateLandListingPage() {
     const newListing = {
       id: Date.now().toString(),
       ...formData,
+      recommendedPrice, // Store this for reference
       createdAt: new Date().toISOString(),
     }
     landListings.push(newListing)
     localStorage.setItem('landListings', JSON.stringify(landListings))
-    
+
     router.push('/listings/lands')
   }
 
@@ -56,7 +81,7 @@ export default function CreateLandListingPage() {
         {/* Contact Information */}
         <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Contact Information</h2>
-          
+
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
@@ -106,27 +131,45 @@ export default function CreateLandListingPage() {
             </div>
 
             <div>
-              <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
-                Your Location *
+              <label htmlFor="pincode" className="block text-sm font-medium text-gray-700 mb-2">
+                Pincode *
               </label>
               <input
                 type="text"
-                id="location"
-                name="location"
+                id="pincode"
+                name="pincode"
                 required
-                value={formData.location}
-                onChange={handleChange}
-                placeholder="City, State"
+                maxLength={6}
+                value={formData.pincode}
+                onChange={handlePincodeChange}
+                placeholder="Enter 6-digit pincode"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
               />
             </div>
           </div>
+
+          {formData.location && (
+            <div className="bg-green-50 p-4 rounded-lg border border-green-200 grid md:grid-cols-3 gap-4">
+              <div>
+                <span className="block text-xs text-green-600 font-semibold uppercase">Location</span>
+                <span className="text-green-900 font-medium">{formData.location}</span>
+              </div>
+              <div>
+                <span className="block text-xs text-green-600 font-semibold uppercase">Climate</span>
+                <span className="text-green-900 font-medium">{formData.climate}</span>
+              </div>
+              <div>
+                <span className="block text-xs text-green-600 font-semibold uppercase">Temperature</span>
+                <span className="text-green-900 font-medium">{formData.temperature}</span>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Land Details */}
         <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Land Details</h2>
-          
+
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <label htmlFor="landSize" className="block text-sm font-medium text-gray-700 mb-2">
@@ -238,32 +281,60 @@ export default function CreateLandListingPage() {
               />
             </div>
           </div>
-        </div>
-
-        {/* Farmer Requirements */}
-        <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">What Kind of Farmer Are You Looking For?</h2>
-          
-          <div>
-            <label htmlFor="farmerRequirements" className="block text-sm font-medium text-gray-700 mb-2">
-              Requirements & Preferences *
-            </label>
-            <textarea
-              id="farmerRequirements"
-              name="farmerRequirements"
-              required
-              rows={4}
-              value={formData.farmerRequirements}
-              onChange={handleChange}
-              placeholder="Describe the type of farmer you're looking for, experience level, crops you're interested in, farming methods preferred (organic, conventional, etc.), etc."
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-            />
-          </div>
 
           <div className="grid md:grid-cols-2 gap-4">
             <div>
+              <label htmlFor="pastYield" className="block text-sm font-medium text-gray-700 mb-2">
+                Past Yield (Optional)
+              </label>
+              <input
+                type="text"
+                id="pastYield"
+                name="pastYield"
+                value={formData.pastYield}
+                onChange={handleChange}
+                placeholder="e.g., 50 tons/acre last year"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Financials & Requirements */}
+        <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Financials & Requirements</h2>
+
+          {recommendedPrice && (
+            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 mb-4">
+              <div className="flex items-center gap-2">
+                <span className="text-blue-600 text-xl">💡</span>
+                <div>
+                  <p className="text-sm text-blue-800 font-medium">Market Insight</p>
+                  <p className="text-blue-900">Recommended price for your area: <span className="font-bold">{recommendedPrice}</span></p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="priceExpectation" className="block text-sm font-medium text-gray-700 mb-2">
+                Price Expectation (Willing to get)
+              </label>
+              <input
+                type="text"
+                id="priceExpectation"
+                name="priceExpectation"
+                value={formData.priceExpectation}
+                onChange={handleChange}
+                placeholder="e.g., ₹50,000/month or Share %"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+              />
+            </div>
+
+            <div>
               <label htmlFor="compensation" className="block text-sm font-medium text-gray-700 mb-2">
-                Compensation/Arrangement
+                Arrangement Type
               </label>
               <select
                 id="compensation"
@@ -281,7 +352,25 @@ export default function CreateLandListingPage() {
                 <option value="negotiable">Negotiable</option>
               </select>
             </div>
+          </div>
 
+          <div>
+            <label htmlFor="farmerRequirements" className="block text-sm font-medium text-gray-700 mb-2">
+              Farmer Requirements *
+            </label>
+            <textarea
+              id="farmerRequirements"
+              name="farmerRequirements"
+              required
+              rows={4}
+              value={formData.farmerRequirements}
+              onChange={handleChange}
+              placeholder="Describe the type of farmer you're looking for, experience level, crops you're interested in, farming methods preferred (organic, conventional, etc.), etc."
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            />
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4">
             <div>
               <label htmlFor="duration" className="block text-sm font-medium text-gray-700 mb-2">
                 Expected Duration
@@ -332,9 +421,3 @@ export default function CreateLandListingPage() {
     </div>
   )
 }
-
-
-
-
-
-

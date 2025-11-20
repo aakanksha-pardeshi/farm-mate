@@ -9,7 +9,10 @@ interface LandListing {
   name: string
   email: string
   phone: string
-  location: string
+  location: string // Owner location
+  pincode?: string
+  climate?: string
+  temperature?: string
   description?: string
   landSize: string
   landLocation: string
@@ -19,6 +22,8 @@ interface LandListing {
   waterAccess?: string
   infrastructure?: string
   compensation?: string
+  priceExpectation?: string
+  pastYield?: string
   duration?: string
   createdAt: string
 }
@@ -30,45 +35,24 @@ export default function LandListingsPage() {
   const [filterLocation, setFilterLocation] = useState('')
 
   useEffect(() => {
-    // Load listings from both profiles and dedicated land listings
-    const profiles = JSON.parse(localStorage.getItem('profiles') || '[]')
+    // Load listings ONLY from dedicated land listings
     const dedicatedListings = JSON.parse(localStorage.getItem('landListings') || '[]')
-    
-    // Convert profile-based landowners to land listings format
-    const profileListings = profiles
-      .filter((p: any) => p.type === 'landowner')
-      .map((p: any) => ({
-        id: p.id,
-        type: 'landowner',
-        name: p.name,
-        email: p.email,
-        phone: p.phone,
-        location: p.location,
-        description: p.description,
-        landSize: p.landSize || '',
-        landLocation: p.landLocation || p.location,
-        landDescription: p.landDescription || p.description,
-        farmerRequirements: p.farmerRequirements || '',
-        createdAt: p.createdAt,
-      }))
-    
-    // Combine both sources
-    const allListings = [...profileListings, ...dedicatedListings]
-    setListings(allListings)
+
+    setListings(dedicatedListings)
     setLoading(false)
   }, [])
 
   const filteredListings = listings.filter((listing) => {
-    const matchesSearch = 
+    const matchesSearch =
       listing.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       listing.landLocation.toLowerCase().includes(searchTerm.toLowerCase()) ||
       listing.landDescription.toLowerCase().includes(searchTerm.toLowerCase()) ||
       listing.farmerRequirements.toLowerCase().includes(searchTerm.toLowerCase())
-    
-    const matchesLocation = !filterLocation || 
+
+    const matchesLocation = !filterLocation ||
       listing.location.toLowerCase().includes(filterLocation.toLowerCase()) ||
       listing.landLocation.toLowerCase().includes(filterLocation.toLowerCase())
-    
+
     return matchesSearch && matchesLocation
   })
 
@@ -149,8 +133,8 @@ export default function LandListingsPage() {
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredListings.map((listing) => (
-            <div key={listing.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
-              <div className="p-6">
+            <div key={listing.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition flex flex-col">
+              <div className="p-6 flex-grow">
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-1">{listing.name}</h3>
@@ -159,25 +143,44 @@ export default function LandListingsPage() {
                   <span className="text-2xl">🏞️</span>
                 </div>
 
+                {listing.climate && (
+                  <div className="mb-4 flex gap-2 flex-wrap">
+                    <span className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                      🌡️ {listing.temperature}
+                    </span>
+                    <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                      🌤️ {listing.climate}
+                    </span>
+                  </div>
+                )}
+
                 <div className="space-y-2 mb-4">
                   <div className="flex items-center text-sm text-gray-700">
-                    <span className="font-medium">Land Size:</span>
-                    <span className="ml-2">{listing.landSize} acres</span>
-                  </div>
-                  <div className="flex items-center text-sm text-gray-700">
-                    <span className="font-medium">Location:</span>
-                    <span className="ml-2">{listing.location}</span>
+                    <span className="font-medium w-24">Land Size:</span>
+                    <span>{listing.landSize} acres</span>
                   </div>
                   {listing.soilType && (
                     <div className="flex items-center text-sm text-gray-700">
-                      <span className="font-medium">Soil Type:</span>
-                      <span className="ml-2 capitalize">{listing.soilType}</span>
+                      <span className="font-medium w-24">Soil Type:</span>
+                      <span className="capitalize">{listing.soilType}</span>
                     </div>
                   )}
                   {listing.waterAccess && (
                     <div className="flex items-center text-sm text-gray-700">
-                      <span className="font-medium">Water Access:</span>
-                      <span className="ml-2">{listing.waterAccess}</span>
+                      <span className="font-medium w-24">Water:</span>
+                      <span className="capitalize">{listing.waterAccess}</span>
+                    </div>
+                  )}
+                  {listing.priceExpectation && (
+                    <div className="flex items-center text-sm text-gray-700">
+                      <span className="font-medium w-24">Price:</span>
+                      <span className="font-semibold text-green-700">{listing.priceExpectation}</span>
+                    </div>
+                  )}
+                  {listing.pastYield && (
+                    <div className="flex items-center text-sm text-gray-700">
+                      <span className="font-medium w-24">Past Yield:</span>
+                      <span>{listing.pastYield}</span>
                     </div>
                   )}
                 </div>
@@ -192,21 +195,21 @@ export default function LandListingsPage() {
                     {listing.farmerRequirements}
                   </p>
                 </div>
+              </div>
 
-                <div className="mt-4 pt-4 border-t flex gap-2">
-                  <a
-                    href={`mailto:${listing.email}`}
-                    className="flex-1 text-center bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-700 transition"
-                  >
-                    Contact
-                  </a>
-                  <a
-                    href={`tel:${listing.phone}`}
-                    className="flex-1 text-center border-2 border-primary-600 text-primary-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-50 transition"
-                  >
-                    Call
-                  </a>
-                </div>
+              <div className="p-6 pt-0 mt-auto flex gap-2">
+                <a
+                  href={`mailto:${listing.email}`}
+                  className="flex-1 text-center bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-700 transition"
+                >
+                  Contact
+                </a>
+                <a
+                  href={`tel:${listing.phone}`}
+                  className="flex-1 text-center border-2 border-primary-600 text-primary-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-50 transition"
+                >
+                  Call
+                </a>
               </div>
             </div>
           ))}
@@ -219,4 +222,3 @@ export default function LandListingsPage() {
     </div>
   )
 }
-

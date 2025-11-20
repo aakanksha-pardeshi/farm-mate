@@ -1,4 +1,4 @@
-// File: D:\PROFESSIONAL\VOIS PROJECT FARMMATE\app\privacy\page.tsx
+// File: /home/manth/farm-mate/app/privacy/page.tsx
 import * as entry from '../../../../app/privacy/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
