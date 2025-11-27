@@ -1,4 +1,4 @@
-// File: D:\PROFESSIONAL\VOIS PROJECT FARMMATE\app\listings\lands\page.tsx
+// File: /home/manth/farm-mate/app/listings/lands/page.tsx
 import * as entry from '../../../../../app/listings/lands/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
