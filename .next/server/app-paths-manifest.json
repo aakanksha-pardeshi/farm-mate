@@ -1,7 +1,6 @@
 {
   "/page": "app/page.js",
-  "/listings/farmers/page": "app/listings/farmers/page.js",
-  "/about/page": "app/about/page.js",
   "/profile/create/page": "app/profile/create/page.js",
-  "/listings/lands/page": "app/listings/lands/page.js"
+  "/listings/lands/page": "app/listings/lands/page.js",
+  "/listings/farmers/page": "app/listings/farmers/page.js"
 }
