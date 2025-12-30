@@ -7,12 +7,13 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-2xl">🌾</span>
-              <span className="text-xl font-bold text-white tracking-tight">FarmMate</span>
+              <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                FM
+              </div>
+              <span className="text-2xl font-bold text-white tracking-tight">FarmMate</span>
             </div>
-            <p className="text-gray-400 max-w-sm mb-6">
-              Connecting landowners and farmers to create sustainable agricultural partnerships.
-              Building the future of farming, together.
+            <p className="text-primary-200 text-sm mb-6">
+              Connecting farmers with land owners for a sustainable and prosperous future.
             </p>
             <div className="flex gap-4">
               {/* Social placeholders */}
@@ -22,36 +23,34 @@ export default function Footer() {
             </div>
           </div>
 
-          <div>
-            <h3 className="text-sm font-semibold text-gray-200 uppercase tracking-wider mb-4">Platform</h3>
-            <ul className="space-y-3 text-gray-400">
-              <li><Link href="/listings/lands" className="hover:text-primary-400 transition">Browse Lands</Link></li>
-              <li><Link href="/listings/farmers" className="hover:text-primary-400 transition">Find Farmers</Link></li>
-              <li><Link href="#" className="hover:text-primary-400 transition">How it Works</Link></li>
-              <li><Link href="#" className="hover:text-primary-400 transition">Pricing</Link></li>
+          <div className="col-span-1 md:col-span-1">
+            <h3 className="text-white font-semibold mb-4">Platform</h3>
+            <ul className="space-y-2 text-sm text-primary-200">
+              <li><Link href="/listings/lands" className="hover:text-white transition">Browse Lands</Link></li>
+              <li><Link href="/listings/farmers" className="hover:text-white transition">Find Farmers</Link></li>
+              <li><Link href="/login" className="hover:text-white transition">Login</Link></li>
+              <li><Link href="/profile/create" className="hover:text-white transition">Sign Up</Link></li>
             </ul>
           </div>
 
-          <div>
-            <h3 className="text-sm font-semibold text-gray-200 uppercase tracking-wider mb-4">Support</h3>
-            <ul className="space-y-3 text-gray-400">
-              <li><Link href="#" className="hover:text-primary-400 transition">Help Center</Link></li>
-              <li><Link href="#" className="hover:text-primary-400 transition">Safety Guidelines</Link></li>
-              <li><Link href="#" className="hover:text-primary-400 transition">Terms of Service</Link></li>
-              <li><Link href="#" className="hover:text-primary-400 transition">Privacy Policy</Link></li>
+          <div className="col-span-1 md:col-span-1">
+            <h3 className="text-white font-semibold mb-4">Support</h3>
+            <ul className="space-y-2 text-sm text-primary-200">
+              <li><Link href="#" className="hover:text-white transition">Help Center</Link></li>
+              <li><Link href="#" className="hover:text-white transition">Safety Guidelines</Link></li>
+              <li><Link href="#" className="hover:text-white transition">Terms of Service</Link></li>
+              <li><Link href="#" className="hover:text-white transition">Privacy Policy</Link></li>
             </ul>
           </div>
         </div>
 
-        <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-gray-500 text-sm">
+        <div className="border-t border-primary-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-primary-300 text-sm">
             © {new Date().getFullYear()} FarmMate. All rights reserved.
           </p>
-          <div className="flex items-center gap-2 text-sm text-gray-500">
-            <span>🔒 Secure Platform</span>
-            <span>•</span>
-            <span>✅ Verified Users</span>
-          </div>
+          <p className="text-primary-300 text-sm flex items-center gap-1">
+            Made with code for Indian Agriculture
+          </p>
         </div>
       </div>
     </footer>

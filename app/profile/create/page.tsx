@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { getPincodeDetails } from '@/utils/location'
 
 function CreateProfileContent() {
   const router = useRouter()
@@ -22,9 +23,34 @@ function CreateProfileContent() {
     specialties: '',
     // Farmer specific
     yearsOfExperience: '',
+    experienceLevel: 'Intermediate', // Default
     crops: '',
+    availability: 'Full-time', // Default
     certifications: '',
+    expectedRate: '', // Farmer's price expectation
+    pincode: '',
   })
+
+  const handlePincodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value
+    setFormData(prev => ({ ...prev, pincode: val }))
+
+    if (val.length === 6) {
+      const fetchDetails = async () => {
+        const details = await getPincodeDetails(val)
+        if (details) {
+          setFormData(prev => ({
+            ...prev,
+            pincode: val,
+            location: `${details.city}, ${details.state}`,
+            latitude: details.latitude,
+            longitude: details.longitude
+          } as any))
+        }
+      }
+      fetchDetails()
+    }
+  }
 
   useEffect(() => {
     if (typeParam === 'farmer' || typeParam === 'landowner') {
@@ -130,13 +156,25 @@ function CreateProfileContent() {
                   />
                 </div>
                 <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Pincode</label>
+                  <input
+                    type="text"
+                    maxLength={6}
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition"
+                    value={formData.pincode}
+                    onChange={handlePincodeChange}
+                    placeholder="Enter 6-digit Pincode"
+                  />
+                </div>
+                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Location (City, State)</label>
                   <input
                     type="text"
                     required
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition"
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition bg-gray-50"
                     value={formData.location}
                     onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                    placeholder="Auto-filled from Pincode"
                   />
                 </div>
               </div>
@@ -184,13 +222,47 @@ function CreateProfileContent() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Certifications (Optional)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Availability</label>
+                  <select
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition bg-white"
+                    value={formData.availability}
+                    onChange={(e) => setFormData({ ...formData, availability: e.target.value })}
+                  >
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
+                    <option value="Seasonal">Seasonal</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Experience Level</label>
+                  <select
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition bg-white"
+                    value={formData.experienceLevel}
+                    onChange={(e) => setFormData({ ...formData, experienceLevel: e.target.value })}
+                  >
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Experienced">Experienced</option>
+                    <option value="Expert">Expert</option>
+                  </select>
+                </div>
+                <div>
                   <input
                     type="text"
                     className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition"
                     placeholder="e.g. Organic Farming Certificate"
                     value={formData.certifications}
                     onChange={(e) => setFormData({ ...formData, certifications: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Expected Rate / Price</label>
+                  <input
+                    type="text"
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition"
+                    placeholder="e.g. 15000/month or 40% crop share"
+                    value={formData.expectedRate}
+                    onChange={(e) => setFormData({ ...formData, expectedRate: e.target.value })}
                   />
                 </div>
               </div>

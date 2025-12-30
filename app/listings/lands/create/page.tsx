@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { getPincodeDetails } from '@/utils/location'
 
@@ -25,27 +25,54 @@ export default function CreateLandListing() {
     // New Fields
     climate: '',
     temperature: '',
+    soilType: 'Loamy', // Default
+    availabilityPeriod: 'Year-round', // Default
+    preferredCrops: '',
     priceExpectation: '',
     pastYield: '',
   })
 
+
+
   const [recommendedPrice, setRecommendedPrice] = useState<string | null>(null)
+  const [currentUser, setCurrentUser] = useState<any>(null)
+
+  useEffect(() => {
+    const userStr = localStorage.getItem('currentUser')
+    if (userStr) {
+      const user = JSON.parse(userStr)
+      setCurrentUser(user)
+      if (user.type === 'landowner' || user.type === 'farmer') {
+        setFormData(prev => ({
+          ...prev,
+          name: user.name || '',
+          email: user.email || '',
+          phone: user.phone || ''
+        }))
+      }
+    }
+  }, [])
 
   const handlePincodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const pincode = e.target.value
     setFormData(prev => ({ ...prev, pincode }))
 
     if (pincode.length === 6) {
-      const details = getPincodeDetails(pincode)
-      if (details) {
-        setFormData(prev => ({
-          ...prev,
-          landLocation: `${details.city}, ${details.state}`,
-          climate: details.climate,
-          temperature: details.temperature
-        }))
-        setRecommendedPrice(details.recommendedPrice)
+      const fetchDetails = async () => {
+        const details = await getPincodeDetails(pincode)
+        if (details) {
+          setFormData(prev => ({
+            ...prev,
+            landLocation: `${details.city}, ${details.state}`,
+            climate: details.climate,
+            temperature: details.temperature,
+            latitude: details.latitude,
+            longitude: details.longitude
+          } as any)) // Cast as any for now since we are adding dynamic props
+          setRecommendedPrice(details.recommendedPrice)
+        }
       }
+      fetchDetails()
     }
   }
 
@@ -56,6 +83,7 @@ export default function CreateLandListing() {
     const listing = {
       id: Date.now().toString(),
       type: 'landowner',
+      ownerId: currentUser?.id, // Link to the user
       ...formData,
       createdAt: new Date().toISOString(),
     }
@@ -150,15 +178,57 @@ export default function CreateLandListing() {
                 </div>
               </div>
 
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Land Description</label>
+              <textarea
+                required
+                rows={4}
+                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition"
+                placeholder="Describe soil quality, water access, infrastructure, etc."
+                value={formData.landDescription}
+                onChange={(e) => setFormData({ ...formData, landDescription: e.target.value })}
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Land Description</label>
-                <textarea
-                  required
-                  rows={4}
+                <label className="block text-sm font-medium text-gray-700 mb-1">Soil Type</label>
+                <select
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition bg-white"
+                  value={formData.soilType}
+                  onChange={(e) => setFormData({ ...formData, soilType: e.target.value })}
+                >
+                  <option value="Loamy">Loamy</option>
+                  <option value="Clay">Clay</option>
+                  <option value="Sandy">Sandy</option>
+                  <option value="Black Soil">Black Soil</option>
+                  <option value="Red Soil">Red Soil</option>
+                  <option value="Silt">Silt</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Availability Period</label>
+                <select
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition bg-white"
+                  value={formData.availabilityPeriod}
+                  onChange={(e) => setFormData({ ...formData, availabilityPeriod: e.target.value })}
+                >
+                  <option value="Year-round">Year-round</option>
+                  <option value="Kharif Season">Kharif Season (June-Oct)</option>
+                  <option value="Rabi Season">Rabi Season (Oct-March)</option>
+                  <option value="Summer Season">Summer Season (March-June)</option>
+                </select>
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">Preferred Crops</label>
+                <input
+                  type="text"
                   className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition"
-                  placeholder="Describe soil quality, water access, infrastructure, etc."
-                  value={formData.landDescription}
-                  onChange={(e) => setFormData({ ...formData, landDescription: e.target.value })}
+                  placeholder="e.g. Wheat, Rice, Cotton (Comma separated)"
+                  value={formData.preferredCrops}
+                  onChange={(e) => setFormData({ ...formData, preferredCrops: e.target.value })}
                 />
               </div>
             </div>
