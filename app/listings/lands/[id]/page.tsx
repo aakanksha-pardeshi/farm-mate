@@ -42,8 +42,12 @@ export default function LandDetails() {
 
                 <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
                     {/* Header Image */}
-                    <div className="h-64 bg-primary-900 relative">
-                        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center opacity-40"></div>
+                    <div className="h-64 bg-primary-900 relative overflow-hidden">
+                        {land.image ? (
+                            <img src={land.image} alt="Land" className="absolute inset-0 w-full h-full object-cover opacity-60" />
+                        ) : (
+                            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center opacity-40"></div>
+                        )}
                         <div className="absolute bottom-0 left-0 p-8 text-white z-10">
                             <h1 className="text-4xl font-bold mb-2">{land.landSize} Acres in {land.landLocation || land.location}</h1>
                             <div className="flex gap-4 text-primary-100">

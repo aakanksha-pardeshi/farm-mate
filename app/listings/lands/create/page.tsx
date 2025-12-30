@@ -30,11 +30,14 @@ export default function CreateLandListing() {
     preferredCrops: '',
     priceExpectation: '',
     pastYield: '',
+    image: '', // Base64 string
   })
 
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [recommendationInfo, setRecommendationInfo] = useState<{ price: string, count: number } | null>(null)
 
 
-  const [recommendedPrice, setRecommendedPrice] = useState<string | null>(null)
+
   const [currentUser, setCurrentUser] = useState<any>(null)
 
   useEffect(() => {
@@ -53,6 +56,32 @@ export default function CreateLandListing() {
     }
   }, [])
 
+  const calculateRecommendedPrice = (location: string) => {
+    const existingListings = JSON.parse(localStorage.getItem('landListings') || '[]')
+    const similarListings = existingListings.filter((l: any) =>
+      l.landLocation.toLowerCase().includes(location.toLowerCase()) ||
+      location.toLowerCase().includes(l.landLocation.toLowerCase())
+    )
+
+    if (similarListings.length > 0) {
+      const totalPerAcre = similarListings.reduce((acc: number, curr: any) => {
+        // Try to extract numeric price from string like "50000/acre"
+        const priceMatch = curr.priceExpectation?.match(/(\d+)/)
+        const price = priceMatch ? parseInt(priceMatch[0]) : 0
+        const size = parseFloat(curr.landSize) || 1
+        return acc + (price / size)
+      }, 0)
+
+      const avgPerAcre = totalPerAcre / similarListings.length
+      setRecommendationInfo({
+        price: `₹${Math.round(avgPerAcre).toLocaleString()}/acre`,
+        count: similarListings.length
+      })
+    } else {
+      setRecommendationInfo(null)
+    }
+  }
+
   const handlePincodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const pincode = e.target.value
     setFormData(prev => ({ ...prev, pincode }))
@@ -61,18 +90,32 @@ export default function CreateLandListing() {
       const fetchDetails = async () => {
         const details = await getPincodeDetails(pincode)
         if (details) {
+          const newLocation = `${details.city}, ${details.state}`
           setFormData(prev => ({
             ...prev,
-            landLocation: `${details.city}, ${details.state}`,
+            landLocation: newLocation,
             climate: details.climate,
             temperature: details.temperature,
             latitude: details.latitude,
             longitude: details.longitude
-          } as any)) // Cast as any for now since we are adding dynamic props
-          setRecommendedPrice(details.recommendedPrice)
+          } as any))
+          calculateRecommendedPrice(newLocation)
         }
       }
       fetchDetails()
+    }
+  }
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        const base64String = reader.result as string
+        setFormData(prev => ({ ...prev, image: base64String }))
+        setImagePreview(base64String)
+      }
+      reader.readAsDataURL(file)
     }
   }
 
@@ -178,6 +221,25 @@ export default function CreateLandListing() {
                 </div>
               </div>
 
+              {/* Image Upload */}
+              <div className="space-y-4">
+                <label className="block text-sm font-medium text-gray-700">Land Photos</label>
+                <div className="flex items-center justify-center w-full">
+                  <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100 transition overflow-hidden relative">
+                    {imagePreview ? (
+                      <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                        <span className="text-4xl mb-2">📸</span>
+                        <p className="mb-2 text-sm text-gray-500 font-semibold">Click to upload land image</p>
+                        <p className="text-xs text-gray-400">PNG, JPG or WEBP (Max. 5MB)</p>
+                      </div>
+                    )}
+                    <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
+                  </label>
+                </div>
+              </div>
+
             </div>
 
             <div>
@@ -250,9 +312,9 @@ export default function CreateLandListing() {
                     value={formData.priceExpectation}
                     onChange={(e) => setFormData({ ...formData, priceExpectation: e.target.value })}
                   />
-                  {recommendedPrice && (
+                  {recommendationInfo && (
                     <p className="text-sm text-green-600 mt-2 flex items-center gap-1">
-                      <span>💡</span> Recommended: {recommendedPrice}
+                      <span>💡</span> Recommended: {recommendationInfo.price} (Based on {recommendationInfo.count} similar listings)
                     </p>
                   )}
                 </div>

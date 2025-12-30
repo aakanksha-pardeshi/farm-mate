@@ -22,6 +22,7 @@ interface LandListing {
   temperature?: string
   priceExpectation?: string
   pastYield?: string
+  image?: string
 }
 
 export default function LandListings() {
@@ -111,8 +112,8 @@ export default function LandListings() {
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredListings.map((listing) => (
-              <div key={listing.id} className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition duration-300 border border-gray-100 overflow-hidden flex flex-col group">
-                {/* Card Header / Image Placeholder */}
+              <Link key={listing.id} href={`/listings/lands/${listing.id}`} className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition duration-300 border border-gray-100 overflow-hidden flex flex-col group cursor-pointer">
+                {/* Card Header / Image */}
                 <div className="h-48 bg-gray-100 relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
                   <div className="absolute bottom-4 left-4 z-20 text-white">
@@ -121,10 +122,15 @@ export default function LandListings() {
                       <span>📍</span> {listing.landLocation}
                     </p>
                   </div>
-                  {/* Mock Image - In a real app this would be dynamic */}
-                  <div className="w-full h-full bg-primary-100 flex items-center justify-center text-primary-300 text-4xl group-hover:scale-105 transition-transform duration-500">
-                    🌱
-                  </div>
+
+                  {listing.image ? (
+                    <img src={listing.image} alt="Land" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  ) : (
+                    <div className="w-full h-full bg-primary-100 flex items-center justify-center text-primary-300 text-4xl group-hover:scale-105 transition-transform duration-500">
+                      🌱
+                    </div>
+                  )}
+
                   <div className="absolute top-4 right-4 z-20 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-primary-700 flex items-center gap-1 shadow-sm">
                     <span>✓</span> Verified Owner
                   </div>
@@ -196,7 +202,7 @@ export default function LandListings() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}
