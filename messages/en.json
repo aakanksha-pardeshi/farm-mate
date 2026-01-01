@@ -1,0 +1,15 @@
+{
+    "Index": {
+        "title": "FarmMate",
+        "subtitle": "Connecting Farmers and Landowners",
+        "getStarted": "Get Started",
+        "learnMore": "Learn More"
+    },
+    "Common": {
+        "home": "Home",
+        "listings": "Listings",
+        "about": "About",
+        "privacy": "Privacy",
+        "profile": "Profile"
+    }
+}
