@@ -42,7 +42,7 @@ export default function Navbar() {
                   : 'text-gray-600 hover:text-primary-600'
                   }`}
               >
-                Find Farmers
+                {t('findFarmers')}
               </Link>
             </div>
           </div>
@@ -96,7 +96,7 @@ export default function Navbar() {
               href="/listings/farmers"
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50"
             >
-              Find Farmers
+              {t('findFarmers')}
             </Link>
             <Link
               href="/profile"

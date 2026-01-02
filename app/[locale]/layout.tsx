@@ -20,12 +20,14 @@ export default async function LocaleLayout({
   children: React.ReactNode
   params: { locale: string }
 }) {
-  const messages = await getMessages();
+  console.log('LocaleLayout params.locale:', locale);
+  const messages = await getMessages({ locale });
+  console.log('Loaded messages for locale:', locale, 'Sample:', (messages as any).Common?.home);
 
   return (
     <html lang={locale}>
       <body className={inter.className}>
-        <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider messages={messages} locale={locale}>
           <Navbar />
           <main className="min-h-screen">
             {children}

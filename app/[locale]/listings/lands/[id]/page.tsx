@@ -68,19 +68,43 @@ export default function LandDetails() {
 
                 <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
                     {/* Header Image */}
-                    <div className="h-64 bg-primary-900 relative overflow-hidden">
-                        {land.image ? (
-                            <img src={land.image} alt="Land" className="absolute inset-0 w-full h-full object-cover opacity-60" />
-                        ) : (
-                            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center opacity-40"></div>
-                        )}
-                        <div className="absolute bottom-0 left-0 p-8 text-white z-10">
-                            <h1 className="text-4xl font-bold mb-2">{land.landSize} Acres in {land.landLocation || land.location}</h1>
-                            <div className="flex gap-4 text-primary-100">
-                                <span className="bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">{land.soilType} Soil</span>
-                                <span className="bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">{land.availabilityPeriod}</span>
+                    {/* Header Image Gallery */}
+                    <div className="relative">
+                        <div className="h-96 bg-primary-900 relative overflow-hidden">
+                            {land.images && land.images.length > 0 ? (
+                                <img src={land.images[0]} alt="Land Main" className="absolute inset-0 w-full h-full object-cover opacity-90" />
+                            ) : land.image ? (
+                                <img src={land.image} alt="Land Main" className="absolute inset-0 w-full h-full object-cover opacity-90" />
+                            ) : (
+                                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center opacity-40"></div>
+                            )}
+                            <div className="absolute bottom-0 left-0 p-8 text-white z-10 bg-gradient-to-t from-black/80 to-transparent w-full">
+                                <h1 className="text-4xl font-bold mb-2">{land.landSize} Acres in {land.landLocation || land.location}</h1>
+                                <div className="flex gap-4 text-primary-100">
+                                    <span className="bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">{land.soilType} Soil</span>
+                                    <span className="bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">{land.availabilityPeriod}</span>
+                                </div>
                             </div>
                         </div>
+                        {/* Thumbnails */}
+                        {land.images && land.images.length > 1 && (
+                            <div className="flex gap-2 p-4 overflow-x-auto bg-white border-b border-gray-100">
+                                {land.images.map((img: string, idx: number) => (
+                                    <img
+                                        key={idx}
+                                        src={img}
+                                        alt={`Land view ${idx + 1}`}
+                                        className="h-20 w-32 object-cover rounded-lg cursor-pointer hover:opacity-80 transition border border-gray-200"
+                                        onClick={() => {
+                                            // Simple gallery logic: replace main image source (DOM manipulation for simplicity or state)
+                                            // For a better React approach, we'd add a state for 'selectedImage'
+                                            const mainImg = document.querySelector('img[alt="Land Main"]') as HTMLImageElement;
+                                            if (mainImg) mainImg.src = img;
+                                        }}
+                                    />
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     <div className="p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -158,8 +182,8 @@ export default function LandDetails() {
                             <h3 className="text-2xl font-bold text-gray-900 mb-6">Similar Lands You Might Like</h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                                 {recommendations.map((rec: any) => (
-                                    <Link 
-                                        key={rec._id} 
+                                    <Link
+                                        key={rec._id}
                                         href={`/listings/lands/${rec._id}`}
                                         className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:shadow-md transition group"
                                     >
