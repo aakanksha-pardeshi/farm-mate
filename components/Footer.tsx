@@ -1,6 +1,9 @@
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
+import { useTranslations } from 'next-intl'
 
 export default function Footer() {
+  const t = useTranslations('Common')
+
   return (
     <footer className="bg-gray-900 text-white py-12 border-t border-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -26,7 +29,7 @@ export default function Footer() {
           <div className="col-span-1 md:col-span-1">
             <h3 className="text-white font-semibold mb-4">Platform</h3>
             <ul className="space-y-2 text-sm text-primary-200">
-              <li><Link href="/listings/lands" className="hover:text-white transition">Browse Lands</Link></li>
+              <li><Link href="/listings/lands" className="hover:text-white transition">{t('listings')}</Link></li>
               <li><Link href="/listings/farmers" className="hover:text-white transition">Find Farmers</Link></li>
               <li><Link href="/login" className="hover:text-white transition">Login</Link></li>
               <li><Link href="/profile/create" className="hover:text-white transition">Sign Up</Link></li>

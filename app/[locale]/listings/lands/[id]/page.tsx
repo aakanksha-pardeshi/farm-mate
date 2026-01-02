@@ -2,21 +2,47 @@
 
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
+import { useTranslations } from 'next-intl'
 
 export default function LandDetails() {
     const params = useParams()
     const router = useRouter()
+    const t = useTranslations('Common')
     const [land, setLand] = useState<any>(null)
+    const [recommendations, setRecommendations] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        const id = params.id
-        const allLands = JSON.parse(localStorage.getItem('landListings') || '[]')
-        const foundLand = allLands.find((l: any) => l.id === id)
+        const fetchData = async () => {
+            try {
+                const id = params.id
+                // Fetch land details
+                const res = await fetch(`/api/lands/${id}`)
+                const data = await res.json()
+                if (data.success) {
+                    setLand(data.data)
+                } else {
+                    // Fallback to localStorage if API fails or data not found
+                    const allLands = JSON.parse(localStorage.getItem('landListings') || '[]')
+                    const foundLand = allLands.find((l: any) => l.id === id)
+                    setLand(foundLand)
+                }
 
-        setLand(foundLand)
-        setLoading(false)
+                // Fetch recommendations
+                const recRes = await fetch(`/api/lands/${id}/recommendations`)
+                const recData = await recRes.json()
+                if (recData.success) {
+                    setRecommendations(recData.data)
+                }
+            } catch (error) {
+                console.error('Error fetching land details:', error)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchData()
     }, [params.id])
 
     if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div></div>
@@ -42,8 +68,12 @@ export default function LandDetails() {
 
                 <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
                     {/* Header Image */}
-                    <div className="h-64 bg-primary-900 relative">
-                        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center opacity-40"></div>
+                    <div className="h-64 bg-primary-900 relative overflow-hidden">
+                        {land.image ? (
+                            <img src={land.image} alt="Land" className="absolute inset-0 w-full h-full object-cover opacity-60" />
+                        ) : (
+                            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center opacity-40"></div>
+                        )}
                         <div className="absolute bottom-0 left-0 p-8 text-white z-10">
                             <h1 className="text-4xl font-bold mb-2">{land.landSize} Acres in {land.landLocation || land.location}</h1>
                             <div className="flex gap-4 text-primary-100">
@@ -121,6 +151,40 @@ export default function LandDetails() {
                             </div>
                         </div>
                     </div>
+
+                    {/* Recommendations Section */}
+                    {recommendations.length > 0 && (
+                        <div className="p-8 border-t border-gray-100 bg-gray-50/50">
+                            <h3 className="text-2xl font-bold text-gray-900 mb-6">Similar Lands You Might Like</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                {recommendations.map((rec: any) => (
+                                    <Link 
+                                        key={rec._id} 
+                                        href={`/listings/lands/${rec._id}`}
+                                        className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:shadow-md transition group"
+                                    >
+                                        <div className="h-32 bg-gray-200 relative">
+                                            {rec.image ? (
+                                                <img src={rec.image} alt="Land" className="w-full h-full object-cover" />
+                                            ) : (
+                                                <div className="w-full h-full bg-primary-100 flex items-center justify-center text-primary-300">
+                                                    No Image
+                                                </div>
+                                            )}
+                                            <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-bold text-primary-700">
+                                                {rec.landSize} Ac
+                                            </div>
+                                        </div>
+                                        <div className="p-3">
+                                            <p className="font-bold text-gray-900 truncate">{rec.landLocation}</p>
+                                            <p className="text-xs text-gray-500">{rec.soilType} Soil</p>
+                                            <p className="text-sm font-bold text-primary-600 mt-1">{rec.priceExpectation || 'Negotiable'}</p>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

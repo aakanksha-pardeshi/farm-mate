@@ -1,14 +1,17 @@
 'use client'
 
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
+import LanguageSwitcher from './LanguageSwitcher'
 
 export default function Navbar() {
   const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const t = useTranslations('Common')
 
-  const isActive = (path: string) => pathname === path
+  const isActive = (path: string) => pathname.endsWith(path)
 
   return (
     <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
@@ -30,7 +33,7 @@ export default function Navbar() {
                   : 'text-gray-600 hover:text-primary-600'
                   }`}
               >
-                Find Land
+                {t('listings')}
               </Link>
               <Link
                 href="/listings/farmers"
@@ -46,6 +49,7 @@ export default function Navbar() {
 
           <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center gap-4">
+              <LanguageSwitcher />
               <Link
                 href="/login"
                 className="text-sm font-semibold text-gray-700 hover:text-primary-600 transition"
@@ -57,7 +61,7 @@ export default function Navbar() {
                 className="text-sm font-semibold text-gray-700 hover:text-primary-600 transition flex items-center gap-1"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                <span>Profile</span>
+                <span>{t('profile')}</span>
               </Link>
               <Link
                 href="/profile/create"
@@ -86,7 +90,7 @@ export default function Navbar() {
               href="/listings/lands"
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50"
             >
-              Find Land
+              {t('listings')}
             </Link>
             <Link
               href="/listings/farmers"
@@ -98,7 +102,7 @@ export default function Navbar() {
               href="/profile"
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50"
             >
-              My Profile
+              {t('profile')}
             </Link>
             <Link
               href="/login"
@@ -106,6 +110,9 @@ export default function Navbar() {
             >
               Login
             </Link>
+            <div className="px-3 py-2">
+              <LanguageSwitcher />
+            </div>
           </div>
         </div>
       )}

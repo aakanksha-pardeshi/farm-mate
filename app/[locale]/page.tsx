@@ -1,46 +1,40 @@
-import Link from 'next/link'
-import Recommendations from '@/components/Recommendations'
+import { useTranslations } from 'next-intl'
+import { Link } from '@/i18n/navigation'
 
 export default function Home() {
+  const t = useTranslations('Index')
+
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative bg-primary-900 text-white py-24 lg:py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center opacity-20"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-primary-950/50 to-primary-900/90"></div>
+      <section className="relative h-[90vh] flex items-center justify-center overflow-hidden bg-primary-900">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary-900 via-primary-900/80 to-transparent z-10"></div>
+          <img 
+            src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
+            alt="Farm background" 
+            className="w-full h-full object-cover opacity-50"
+          />
+        </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Recommendations - Only shows if user data exists */}
-          <div className="mb-12">
-            <Recommendations />
-          </div>
-
-          <div className="text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-800/50 border border-primary-700 mb-8 backdrop-blur-sm">
-              <span className="animate-pulse h-2 w-2 rounded-full bg-accent-500"></span>
-              <span className="text-sm font-medium text-primary-100">Trusted by 10,000+ Farmers</span>
-            </div>
-
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-8 text-white">
-              Cultivate <span className="text-primary-400">Partnerships</span>,<br />
-              Grow <span className="text-accent-500">Together</span>.
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full">
+          <div className="max-w-2xl">
+            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+              {t('title')}
             </h1>
-
-            <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed">
-              The most trusted platform connecting landowners with skilled farmers.
-              Maximize yield, ensure sustainable land use, and build lasting agricultural relationships.
+            <p className="text-xl md:text-2xl text-primary-100 mb-10 leading-relaxed">
+              {t('subtitle')}
             </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/listings/lands"
-                className="bg-primary-500 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-primary-400 transition shadow-lg hover:shadow-primary-500/25 flex items-center justify-center gap-2"
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link 
+                href="/listings/lands" 
+                className="bg-primary-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-primary-700 transition shadow-lg shadow-primary-500/30 flex items-center justify-center gap-2"
               >
-                <span>Find Land</span>
+                <span>{t('getStarted')}</span>
                 <span>→</span>
               </Link>
-              <Link
-                href="/profile/create"
+              <Link 
+                href="/profile/create" 
                 className="bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-full font-bold text-lg border border-white/20 hover:bg-white/20 transition flex items-center justify-center gap-2"
               >
                 <span>Join as Partner</span>
