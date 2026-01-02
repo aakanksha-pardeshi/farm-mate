@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/farmmate';
+const MONGODB_URI = 'mongodb://task-manager:AnaqAZxx0BthhQfL@cluster0-shard-00-00.m6vbg.mongodb.net:27017,cluster0-shard-00-01.m6vbg.mongodb.net:27017,cluster0-shard-00-02.m6vbg.mongodb.net:27017/test?ssl=true&replicaSet=atlas-bmr3br-shard-0&authSource=admin&retryWrites=true&w=majority';
 
 if (!MONGODB_URI) {
     throw new Error(

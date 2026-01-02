@@ -1,0 +1,56 @@
+{
+    "Index": {
+        "title": "फार्ममेट",
+        "subtitle": "शेतकरी आणि जमीन मालकांना जोडणे",
+        "getStarted": "सुरु करा",
+        "learnMore": "अधिक जाणून घ्या"
+    },
+    "Common": {
+        "home": "होम",
+        "listings": "लिस्टिंग",
+        "findFarmers": "शेतकरी शोधा",
+        "about": "आमच्याबद्दल",
+        "privacy": "गोपनीयता",
+        "profile": "प्रोफाइल"
+    },
+    "LandListing": {
+        "backToListings": "लिस्टिंगवर परत जा",
+        "title": "तुमची शेतजमीन सूचीबद्ध करा",
+        "subtitle": "योग्य शेतकऱ्यांशी जोडण्यासाठी तुमच्या जमिनीबद्दल तपशील द्या.",
+        "basicInfo": "मूलभूत माहिती",
+        "landSize": "जमिनीचा आकार (एकर)",
+        "location": "स्थान",
+        "characteristics": "जमिनीची वैशिष्ट्ये",
+        "soilType": "मातीचा प्रकार",
+        "selectSoilType": "मातीचा प्रकार निवडा",
+        "availabilityPeriod": "उपलब्धता कालावधी",
+        "description": "वर्णन",
+        "financials": "आर्थिक आणि पिके",
+        "expectedPrice": "अपेक्षित किंमत / व्यवस्था",
+        "preferredCrops": "पसंतीची पिके",
+        "contactInfo": "संपर्क माहिती",
+        "yourName": "तुमचे नाव",
+        "phoneNumber": "फोन नंबर",
+        "publishButton": "जमीन लिस्टिंग प्रकाशित करा",
+        "publishing": "प्रकाशित होत आहे...",
+        "uploadImage": "प्रतिमा अपलोड करा",
+        "recommendedSection": "तुमच्यासाठी शिफारस केलेले",
+        "availableListings": "उपलब्ध जमीन लिस्टिंग",
+        "listingsSubtitle": "भागीदारीसाठी सत्यापित प्रीमियम शेतजमीन संधी शोधा.",
+        "listYourLand": "तुमची जमीन सूचीबद्ध करा",
+        "searchPlaceholder": "स्थान, वर्णन किंवा हवामानानुसार शोधा...",
+        "allLocations": "सर्व स्थाने",
+        "noListings": "कोणतीही लिस्टिंग सापडली नाही",
+        "noListingsSubtitle": "अधिक परिणाम शोधण्यासाठी तुमचा शोध किंवा फिल्टर समायोजित करण्याचा प्रयत्न करा.",
+        "clearFilters": "सर्व फिल्टर साफ करा",
+        "verifiedOwner": "सत्यापित मालक",
+        "landowner": "जमीन मालक",
+        "soilTypes": {
+            "Black": "काळी माती",
+            "Red": "लाल माती",
+            "Alluvial": "गाळाची माती",
+            "Laterite": "जांभी माती",
+            "Sandy": "रेताड माती"
+        }
+    }
+}

@@ -10,9 +10,9 @@ export default function Home() {
       <section className="relative h-[90vh] flex items-center justify-center overflow-hidden bg-primary-900">
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-gradient-to-r from-primary-900 via-primary-900/80 to-transparent z-10"></div>
-          <img 
-            src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
-            alt="Farm background" 
+          <img
+            src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
+            alt="Farm background"
             className="w-full h-full object-cover opacity-50"
           />
         </div>
@@ -26,15 +26,15 @@ export default function Home() {
               {t('subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link 
-                href="/listings/lands" 
+              <Link
+                href="/listings/lands"
                 className="bg-primary-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-primary-700 transition shadow-lg shadow-primary-500/30 flex items-center justify-center gap-2"
               >
                 <span>{t('getStarted')}</span>
                 <span>→</span>
               </Link>
-              <Link 
-                href="/profile/create" 
+              <Link
+                href="/profile/create"
                 className="bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-full font-bold text-lg border border-white/20 hover:bg-white/20 transition flex items-center justify-center gap-2"
               >
                 <span>Join as Partner</span>
@@ -72,7 +72,7 @@ export default function Home() {
                 <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Verified Listings</h3>
-              <p className="text-gray-600">Browse detailed profiles and listings with verified location data to ensure you're making safe decisions.</p>
+              <p className="text-gray-600">Browse detailed profiles and listings with verified location data to ensure you&apos;re making safe decisions.</p>
             </div>
           </div>
         </div>

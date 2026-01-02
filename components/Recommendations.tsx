@@ -167,7 +167,7 @@ export default function Recommendations() {
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">No Matches Found Yet</h3>
             <p className="text-gray-500 mb-6 max-w-sm mx-auto">
-                We couldn't find any listings that match your criteria perfectly right now.
+                We couldn&apos;t find any listings that match your criteria perfectly right now.
                 Be the first to browse all listings!
             </p>
             <div className="flex justify-center gap-4">
