@@ -9,6 +9,16 @@ const LandSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please provide land location'],
     },
+    pincode: {
+        type: String,
+    },
+    waterAvailability: {
+        type: [String],
+        default: []
+    },
+    electricityHours: {
+        type: Number,
+    },
     soilType: {
         type: String,
         required: [true, 'Please provide soil type'],

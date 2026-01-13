@@ -143,8 +143,8 @@ export default function LandDetails() {
                             <div className="bg-white border-2 border-primary-100 rounded-xl p-6 shadow-sm">
                                 <h3 className="text-lg font-bold text-gray-900 mb-4">Financials</h3>
                                 <div className="mb-6">
-                                    <p className="text-sm text-gray-500 mb-1">Expected Price / Arrangement</p>
-                                    <p className="text-2xl font-bold text-primary-700">{land.priceExpectation || 'Negotiable'}</p>
+                                    <p className="text-sm text-gray-500 mb-1">Percentage Share</p>
+                                    <p className="text-2xl font-bold text-primary-700">{land.priceExpectation ? `${land.priceExpectation}%` : 'Negotiable'}</p>
                                 </div>
                                 <button className="w-full bg-primary-600 text-white py-3 rounded-lg font-bold hover:bg-primary-700 transition shadow-lg shadow-primary-500/30">
                                     Connect with Landowner
@@ -153,12 +153,22 @@ export default function LandDetails() {
 
                             <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
                                 <h3 className="text-lg font-bold text-gray-900 mb-4">Posted By</h3>
-                                <div className="flex items-center gap-3 mb-4">
+                                <div
+                                    className="flex items-center gap-3 mb-4 cursor-pointer hover:opacity-80 transition"
+                                    onClick={() => {
+                                        const profiles = JSON.parse(localStorage.getItem('profiles') || '[]');
+                                        // Match by email as it is unique enough for this simple implementation, or assume listing has ID
+                                        const profile = profiles.find((p: any) => p.email === land.email);
+                                        if (profile) {
+                                            router.push(`/profile/${profile.id}`);
+                                        }
+                                    }}
+                                >
                                     <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 font-bold text-xl">
                                         {land.name?.charAt(0) || 'U'}
                                     </div>
                                     <div>
-                                        <p className="font-semibold text-gray-900">{land.name}</p>
+                                        <p className="font-semibold text-gray-900 hover:text-primary-600 transition underline decoration-dotted underline-offset-2">{land.name}</p>
                                         <p className="text-sm text-gray-500">Landowner</p>
                                     </div>
                                 </div>
@@ -202,7 +212,7 @@ export default function LandDetails() {
                                         <div className="p-3">
                                             <p className="font-bold text-gray-900 truncate">{rec.landLocation}</p>
                                             <p className="text-xs text-gray-500">{rec.soilType} Soil</p>
-                                            <p className="text-sm font-bold text-primary-600 mt-1">{rec.priceExpectation || 'Negotiable'}</p>
+                                            <p className="text-sm font-bold text-primary-600 mt-1">{rec.priceExpectation ? `${rec.priceExpectation}% Share` : 'Negotiable'}</p>
                                         </div>
                                     </Link>
                                 ))}

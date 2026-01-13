@@ -26,7 +26,7 @@
         "availabilityPeriod": "Availability Period",
         "description": "Description",
         "financials": "Financials & Crops",
-        "expectedPrice": "Expected Price / Arrangement",
+        "expectedPrice": "Percentage Share (%)",
         "preferredCrops": "Preferred Crops",
         "contactInfo": "Contact Information",
         "yourName": "Your Name",
@@ -45,6 +45,18 @@
         "clearFilters": "Clear all filters",
         "verifiedOwner": "Verified Owner",
         "landowner": "Landowner",
+        "pincode": "Pincode",
+        "waterAvailability": "Water Availability",
+        "selectWaterSources": "Select Water Sources",
+        "electricityHours": "Electricity Availability (Avg. Hours)",
+        "waterSources": {
+            "Well": "Well",
+            "Borewell": "Borewell",
+            "Pond": "Pond",
+            "River": "River",
+            "Canal": "Canal",
+            "None": "None"
+        },
         "soilTypes": {
             "Black": "Black Soil",
             "Red": "Red Soil",

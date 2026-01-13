@@ -72,6 +72,51 @@ export default function LandListings() {
         }
 
         fetchListings()
+
+        // ---------------------------------------------------------
+        // DATA MIGRATION: Fix "weird percentages" in localStorage
+        // ---------------------------------------------------------
+        try {
+            const raw = localStorage.getItem('landListings');
+            if (raw) {
+                let data = JSON.parse(raw);
+                let changed = false;
+                data = data.map((item: any) => {
+                    if (!item.priceExpectation) return item;
+
+                    const str = String(item.priceExpectation);
+                    // Check if it looks like a "weird" string (non-numeric or > 100)
+                    const isSimpleNumber = /^\d+$/.test(str);
+                    let val = parseInt(str.replace(/[^0-9]/g, '') || '0');
+
+                    if (!isSimpleNumber || val > 100) {
+                        // Heuristic: If > 100 (e.g. price), set to 25. If 0 or invalid, set to 20.
+                        // If it's a small number like "30% share", regex extraction handles it.
+                        let newVal = val;
+                        if (val > 100) newVal = 25;
+                        if (val === 0) newVal = 20; // Default
+
+                        item.priceExpectation = String(newVal);
+                        changed = true;
+                    }
+                    return item;
+                });
+
+                if (changed) {
+                    console.log('Migrated localStorage data: fixed price expectations.');
+                    localStorage.setItem('landListings', JSON.stringify(data));
+                    // Update current state if we fell back to local
+                    setListings(prev => {
+                        // Only update if we are displaying local data? 
+                        // Simpler to just let the next fetch or refresh handle it, 
+                        // or update state here too.
+                        return data;
+                    })
+                }
+            }
+        } catch (e) {
+            console.error('Migration error', e);
+        }
     }, [])
 
     const filterListings = (list: any[]) => {
@@ -124,13 +169,13 @@ export default function LandListings() {
                     </div>
                     <div className="md:w-1/4">
                         <select
-                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition bg-white"
+                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition bg-white text-gray-900"
                             value={filterLocation}
                             onChange={(e) => setFilterLocation(e.target.value)}
                         >
-                            <option value="">{t('allLocations')}</option>
+                            <option value="" className="text-gray-900">{t('allLocations')}</option>
                             {Array.from(new Set(listings.map(l => l.landLocation))).filter(Boolean).map(loc => (
-                                <option key={loc} value={loc}>{loc}</option>
+                                <option key={loc} value={loc} className="text-gray-900">{loc}</option>
                             ))}
                         </select>
                     </div>
@@ -245,7 +290,7 @@ function ListingCard({ listing, t }: { listing: any, t: any }) {
                     {listing.priceExpectation && (
                         <div className="bg-green-50 p-3 rounded-lg border border-green-100">
                             <label className="text-xs font-semibold text-green-800 uppercase tracking-wider block mb-1">{t('expectedPrice')}</label>
-                            <p className="text-green-700 font-bold">{listing.priceExpectation}</p>
+                            <p className="text-green-700 font-bold">{listing.priceExpectation}% Share</p>
                         </div>
                     )}
                 </div>

@@ -18,12 +18,7 @@ export default function Footer() {
             <p className="text-primary-200 text-sm mb-6">
               Connecting farmers with land owners for a sustainable and prosperous future.
             </p>
-            <div className="flex gap-4">
-              {/* Social placeholders */}
-              <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:bg-primary-600 hover:text-white transition cursor-pointer">X</div>
-              <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:bg-primary-600 hover:text-white transition cursor-pointer">in</div>
-              <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:bg-primary-600 hover:text-white transition cursor-pointer">fb</div>
-            </div>
+
           </div>
 
           <div className="col-span-1 md:col-span-1">
@@ -41,8 +36,8 @@ export default function Footer() {
             <ul className="space-y-2 text-sm text-primary-200">
               <li><Link href="#" className="hover:text-white transition">Help Center</Link></li>
               <li><Link href="#" className="hover:text-white transition">Safety Guidelines</Link></li>
-              <li><Link href="#" className="hover:text-white transition">Terms of Service</Link></li>
-              <li><Link href="#" className="hover:text-white transition">Privacy Policy</Link></li>
+              <li><Link href="/terms" className="hover:text-white transition">Terms of Service</Link></li>
+              <li><Link href="/privacy" className="hover:text-white transition">Privacy Policy</Link></li>
             </ul>
           </div>
         </div>
